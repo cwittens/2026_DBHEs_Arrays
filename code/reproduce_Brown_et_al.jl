@@ -154,7 +154,7 @@ n_saves = 2
 saveat = range(tspan..., n_saves)
 callback, saved_values = get_callback(
     saveat=saveat,
-    print_every_n=100000,
+    print_every_n=100_000,
     write_to_jld=false
 )
 
