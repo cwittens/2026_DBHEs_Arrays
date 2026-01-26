@@ -150,7 +150,7 @@ callback, saved_values = get_callback(
 
 println("Simulating with Δt = $(Δt)s for 25 years")
 
-t_simulation = @elapsed solve(
+t_elapsed = @elapsed solve(
     prob,
     ROCK2(max_stages=100, eigen_est=eigen_estimator),
     save_everystep=false,
@@ -160,7 +160,7 @@ t_simulation = @elapsed solve(
     maxiters=Int(1e10)
 )
 
-println("Simulation completed in $(round(t_simulation / 3600, digits=2)) hours")
+println("Simulation completed in $(round(t_elapsed / 3600, digits=2)) hours")
 
 # =============================================================================
 # Save simulation data
@@ -176,7 +176,7 @@ cache_cpu = create_cache(
     inlet_model=inlet_model
 )
 
-@save joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_simulation
+@save joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
 
 println("Simulation data saved to $(simulation_data_dir())")
 
@@ -185,7 +185,7 @@ println("Simulation data saved to $(simulation_data_dir())")
 # =============================================================================
 
 # If you don't want to run the simulation yourself, you can load previously saved simulation
-# @load joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_simulation
+# @load joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
 
 # Extract grids from cache
 gridx_cpu = cache_cpu.gridx

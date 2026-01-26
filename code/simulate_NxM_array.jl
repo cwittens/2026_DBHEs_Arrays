@@ -184,7 +184,7 @@ cache = create_cache(
 # =============================================================================
 # Time integration
 # =============================================================================
-tspan = (0.0, 3600 * 24 * 365)  # 1 year [s]
+tspan = (0.0, 3600 * 24)# 1 days or * 365)  # 1 year [s]
 
 prob = ODEProblem(rhs_diffusion_z!, ϕ, tspan, cache)
 
@@ -200,9 +200,9 @@ callback, saved_values = get_callback(
 # Time step and solver
 Δt = 80  # [s]
 
-println("Simulating $(length(XC))×$(length(YC)) array with Δt = $(Δt)s for 36 days")
+println("Simulating $(length(XC))×$(length(YC)) array with Δt = $(Δt)s for $(tspan[2] / (3600 * 24)) days")
 
-t_simulation = @elapsed solve(
+t_elapsed = @elapsed solve(
     prob,
     ROCK2(max_stages=100, eigen_est=eigen_estimator),
     save_everystep=false,
@@ -212,7 +212,7 @@ t_simulation = @elapsed solve(
     maxiters=Int(1e10)
 )
 
-println("Simulation completed in $(round(t_simulation / 3600, digits=2)) hours")
+println("Simulation completed in $(round(t_elapsed / 3600, digits=2)) hours")
 
 # =============================================================================
 # Save simulation data
@@ -229,6 +229,6 @@ cache_cpu = create_cache(
 )
 
 filename = "array_$(length(XC))x$(length(YC))_simulation_data.jld2"
-@save joinpath(simulation_data_dir(), filename) saved_values Δt cache_cpu t_simulation
+@save joinpath(simulation_data_dir(), filename) saved_values Δt cache_cpu t_elapsed
 
 println("Simulation data saved to $(simulation_data_dir())")
