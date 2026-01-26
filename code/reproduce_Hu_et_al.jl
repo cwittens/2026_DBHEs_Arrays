@@ -138,7 +138,7 @@ tspan = (0, 3600 * 24 * 365 * 25)  # 25 years [s]
 prob = ODEProblem(rhs_diffusion_z!, ϕ, tspan, cache)
 
 # Save solution at 0, 1, 5, 10, and 25 years
-saveat = [3600 * 24 * 365 * year for year in [0,1,5,10,25]]
+saveat = [3600 * 24 * 365 * year for year in [0, 1, 5, 10, 25]]
 callback, saved_values = get_callback(
     saveat=saveat,
     print_every_n=100_000,
@@ -186,24 +186,6 @@ println("Simulation data saved to $(simulation_data_dir())")
 
 # If you don't want to run the simulation yourself, you can load previously saved simulation
 # @load joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_simulation
-# raw"\Users\colli\OneDrive - JGU\13. Semester\GeoThermal\geo-playground\code\GeothermalWells.jl\data\Hu_et_al\simulation_result_Hu_25y.jld2"
-
-# Set default plot styling
-default(
-    grid=true,
-    box=:on,
-    size=(600, 400),
-    dpi=300,
-    linewidth=3,
-    gridlinewidth=2,
-    markersize=4,
-    markerstrokewidth=0.1,
-    xtickfontsize=14,
-    ytickfontsize=14,
-    xguidefontsize=16,
-    yguidefontsize=16,
-    legendfontsize=12
-)
 
 # Extract grids from cache
 gridx_cpu = cache_cpu.gridx
@@ -214,10 +196,10 @@ gridz_cpu = cache_cpu.gridz
 # Visualization: Figure 7 - Temperature profiles at 1, 5, 10, and 25 years
 # =============================================================================
 
+
 # Create individual plots for each time point
 # Indices correspond to: 1 year, 5 years, 10 years, 25 years
-time_indices = [2, 6, 11, 26]
-# time_indices = [2,3,4,5]
+time_indices = [2,3,4,5]
 plots_array = []
 
 for idx in time_indices
@@ -225,9 +207,9 @@ for idx in time_indices
     T_inner, T_outer, gridz_adjusted = GeothermalWells.get_temperatures_along_z_single_well(
         saved_values.saveval[idx], cache_cpu
     )
-    
+
     year = Int(saved_values.t[idx] / (3600 * 24 * 365))
-    
+
     # Create temperature profile plot (inlet down, outlet up)
     p = scatter(
         vcat(T_inner, reverse(T_outer)),
@@ -236,44 +218,55 @@ for idx in time_indices
         ylabel="Depth [m]",
         xlabel="Temperature [°C]",
         xlims=(19.519284893437614, 36.545016559411344),
-        legend=(idx == 3),  # Only show legend on one plot
-        title="after $year year" * (year == 1 ? " " : "s")
+        legend=(idx == 2),  # Only show legend on one plot
+        title="after $year year" * (year == 1 ? " " : "s"),
+        markersize=4, markerstrokewidth=0.1,
+        titlefont=font(16),
+        box=:on,
+        xtickfontsize=14, ytickfontsize=14,
+        xguidefontsize=16, yguidefontsize=16,
+        ztickfontsize=14, zguidefontsize=16,
+        legendfontsize=12,
+        gridlinewidth=2,
+        size=(600, 400),
+        dpi=300,
     )
-    
+
     # Manually set y-axis ticks (since yflip affects arrow directions)
     yticks!(p, 0:-1000:-3000, string.(0:1000:3000))
-    
+
     # Add Hu et al. numerical data
     depth, temperature = data_hu(year)
     scatter!(p, temperature, -depth,
         label="Numerical data (Hu et al.)",
         color=2,
+        markersize=4, markerstrokewidth=0.1,
         markershape=:diamond)
-    
+
     # Add inlet/outlet annotations with arrows
     color = :black
     if year == 1
         annotate!(p, [(26.7, -1600, text("Inlet", color, 14)),
-                      (31.3, -1500, text("Outlet", color, 14))])
+            (31.3, -1500, text("Outlet", color, 14))])
         plot!(p, [25, 27], [-1550, -1950], arrow=true, color=color, linewidth=2, label="")
         plot!(p, [33, 32.2], [-1750, -1050], arrow=true, color=color, linewidth=2, label="")
     elseif year == 5
         annotate!(p, [(26.2, -1600, text("Inlet", color, 14)),
-                      (29.8, -1500, text("Outlet", color, 14))])
+            (29.8, -1500, text("Outlet", color, 14))])
         plot!(p, [24.5, 26.5], [-1550, -1950], arrow=true, color=color, linewidth=2, label="")
         plot!(p, [31.5, 30.7], [-1750, -1050], arrow=true, color=color, linewidth=2, label="")
     elseif year == 10
         annotate!(p, [(25.7, -1600, text("Inlet", color, 14)),
-                      (29.3, -1500, text("Outlet", color, 14))])
+            (29.3, -1500, text("Outlet", color, 14))])
         plot!(p, [24, 26], [-1550, -1950], arrow=true, color=color, linewidth=2, label="")
         plot!(p, [31, 30.2], [-1750, -1050], arrow=true, color=color, linewidth=2, label="")
     elseif year == 25
         annotate!(p, [(25.7, -1600, text("Inlet", color, 14)),
-                      (28.6, -1500, text("Outlet", color, 14))])
+            (28.6, -1500, text("Outlet", color, 14))])
         plot!(p, [23.7, 25.7], [-1550, -1950], arrow=true, color=color, linewidth=2, label="")
         plot!(p, [30.3, 29.5], [-1750, -1050], arrow=true, color=color, linewidth=2, label="")
     end
-    
+
     push!(plots_array, p)
 end
 
@@ -301,5 +294,4 @@ p_combined = plot(
 
 # Save figure
 savefig(p_combined, joinpath(plots_dir(), "Hu_et_al_in_outlet.pdf"))
-savefig(p_combined, joinpath(plots_dir(), "Hu_et_al_in_outlet.png"))
 println("Figure 7 saved to $(plots_dir())")
