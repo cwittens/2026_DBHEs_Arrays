@@ -190,48 +190,15 @@ cache_cpu = create_cache(
 @save joinpath(simulation_data_dir(), "Brown_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
 
 println("Simulation data saved to $(simulation_data_dir())")
-#=
+
+
 # =============================================================================
-# Analysis: Helper function for extracting temperatures along borehole depth
+# Analysis and visualization
 # =============================================================================
-"""
-    get_temperatures_along_z_single_well(ϕ_t, cache)
 
-Extract average temperatures in inner and outer pipes as a function of depth.
+# If you dont want to un the simulation yourself, you can load previously saved simulation
+# @load joinpath(simulation_data_dir(), "Brown_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
 
-Returns `(T_inner, T_outer, gridz_adjusted)` where temperatures are averaged
-over all grid points in each pipe section at each depth level.
-
-Note: This function is only valid for single borehole configurations.
-"""
-function get_temperatures_along_z_single_well(ϕ_t, cache)
-    if length(cache.boreholes) != 1
-        @warn "This function is only correct for single borehole setups"
-    end
-    
-    h = cache.boreholes[1].h
-    gridz = cache.gridz
-    idx_inner = cache.Idx_list_Inner
-    idx_outer = cache.Idx_list_Outer
-    
-    # Find depth indices up to borehole depth
-    Nz_till_h = sum(gridz .< h)
-    
-    T_inner = Float64[]
-    T_outer = Float64[]
-    
-    for k in 1:Nz_till_h
-        # Collect all temperatures at this depth level
-        temp_inner = [ϕ_t[k, j, i] for (i, j, bh_idx) in idx_inner]
-        temp_outer = [ϕ_t[k, j, i] for (i, j, bh_idx) in idx_outer]
-        
-        # Average over all grid points at this depth
-        push!(T_inner, mean(temp_inner))
-        push!(T_outer, mean(temp_outer))
-    end
-    
-    return T_inner, T_outer, gridz[1:Nz_till_h]
-end
 
 # =============================================================================
 # Visualization: Figure 4b - Temperature profiles along borehole depth
@@ -241,7 +208,7 @@ end
 (z_beier, T_beier), (z_brown, T_brown) = data_brown_single_well_b()
 
 # Extract temperatures along borehole depth from simulation
-T_inner, T_outer, gridz_adjusted = get_temperatures_along_z_single_well(saved_values.saveval[end], cache_cpu)
+T_inner, T_outer, gridz_adjusted = GeothermalWells.get_temperatures_along_z_single_well(saved_values.saveval[end], cache_cpu)
 
 # Create plot comparing inlet/outlet temperatures
 p1 = scatter(
@@ -250,15 +217,24 @@ p1 = scatter(
     color=1,
     legendfontsize=8,
     ylabel="Depth [m]",
-    xlabel="Temperature [°C]"
+    xlabel="Temperature [°C]",
+    markersize=4, markerstrokewidth=0.1,
+    xtickfontsize=14, ytickfontsize=14,
+    xguidefontsize=16, yguidefontsize=16,
+    ztickfontsize=14, zguidefontsize=16,
+    box=:on,
+    gridlinewidth=2,
+    size=(600, 400),
+    dpi=300,
 )
-scatter!(p1, T_outer, -gridz_adjusted, label="", color=1)
+scatter!(p1, T_outer, -gridz_adjusted, label="", color=1,markersize=4, markerstrokewidth=0.1,)
 
 # Add Brown et al. numerical data
 scatter!(p1, T_brown, -z_brown,
     label="Numerical data (Brown et al.)",
     color=2,
-    markershape=:diamond
+    markershape=:diamond,
+    markersize=4, markerstrokewidth=0.1,
 )
 
 # Add annotations to identify inlet and outlet curves
@@ -275,7 +251,6 @@ yticks!(p1, -0:-200:-800, string.(0:200:800))
 
 # Save figure
 savefig(p1, joinpath(plots_dir(), "Brown_et_al_temperature_in_outlet.pdf"))
-savefig(p1, joinpath(plots_dir(), "Brown_et_al_temperature_in_outlet.png"))
 println("Figure 4b saved to $(plots_dir())")
 
 # =============================================================================
@@ -289,7 +264,7 @@ gridz_cpu = cache_cpu.gridz
 xc = cache_cpu.boreholes[1].xc
 yc = cache_cpu.boreholes[1].yc
 
-T = saved_values.saveval[end]           # final temperature field [°C]
+T = saved_values.saveval[end];             # final temperature field [°C]
 t = saved_values.t[end] / 3600 / 24 / 365  # final time [years]
 
 println("Plotting temperature profiles after $(round(t, digits=1)) years")
@@ -304,8 +279,14 @@ p2 = plot(
     ylabel="Temperature of rock layers [°C]",
     xlims=(-100, 100),
     ylims=(-3, 42),
+    box=:on,
+    gridlinewidth=2,
     legend=:bottomleft,
     legendfontsize=10,
+        markersize=4, markerstrokewidth=0.1,
+    xtickfontsize=14, ytickfontsize=14,
+    xguidefontsize=16, yguidefontsize=16,
+    ztickfontsize=14, zguidefontsize=16,
     left_margin=1Plots.mm,
     right_margin=3Plots.mm,
     size=(700, 500),
@@ -321,7 +302,7 @@ scatter!(p2, [], [], label="Numerical data (Brown et al.)",
 for (i, depth) in enumerate(depths)
     # Extract radial temperature profile at this depth
     # Note: Using full_profile=true to get both sides of borehole
-    r, T_profile = extract_x_profile(T, gridx_cpu, gridy_cpu, gridz_cpu, depth, xc, yc, true)
+    r, T_profile = GeothermalWells.extract_x_profile(T, gridx_cpu, gridy_cpu, gridz_cpu, depth, xc, yc, true)
     plot!(p2, r, T_profile,
         label="",
         color=colors[i],
@@ -346,6 +327,4 @@ annotate!(p2, 65, 16.5, text("300m", color=p2.series_list[3][:linecolor], :left,
 
 # Save figure
 savefig(p2, joinpath(plots_dir(), "Brown_et_al_temperature_rock.pdf"))
-savefig(p2, joinpath(plots_dir(), "Brown_et_al_temperature_rock.png"))
 println("Figure 4d saved to $(plots_dir())")
-=#

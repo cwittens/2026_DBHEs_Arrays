@@ -239,7 +239,7 @@ println("Simulation data saved to $(simulation_data_dir())")
 # Analysis and visualization
 # =============================================================================
 
-# If you dont want to un the simulation yourself, load previously saved simulation
+# If you dont want to un the simulation yourself, you can load previously saved simulation
 # @load joinpath(simulation_data_dir(), "Li_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
 
 # Extract grids and final temperature field
