@@ -1,5 +1,6 @@
 using Pkg
 Pkg.activate(@__DIR__)
+Pkg.instantiate()
 using GeothermalWells
 import GeothermalWells: get_thermal_conductivity,
     get_volumetric_heat_capacity,
@@ -10,10 +11,12 @@ import GeothermalWells: get_thermal_conductivity,
     AbstractInletModel
 using OrdinaryDiffEqStabilizedRK: ODEProblem, solve, ROCK2, DiscreteCallback
 using KernelAbstractions: CPU, adapt, @kernel, @index, zeros
-# using AMDGPU: ROCBackend
 using CUDA: CUDABackend
-
+using LaTeXStrings
+using Plots
 plots_dir() = joinpath(@__DIR__, "plots")
+!isdir(plots_dir()) && mkdir(plots_dir()) # create plots directory if it doesn't exist
+
 
 # define new structs so one can dispatch to different thermal_conductivity / rho_c functions with constant diffusion
 struct MaterialPropertiesConvergence{RealT<:Real} <: AbstractMaterialProperties{RealT}
@@ -22,9 +25,12 @@ end
 
 struct BoreholeConvergence{RealT<:Real} <: AbstractBorehole{RealT} end
 
+# dispatch to functions for constant diffusion coefficient and unit volumetric heat capacity
 @inline get_thermal_conductivity(x, y, z, boreholes::Tuple{Vararg{BoreholeConvergence}}, materials::MaterialPropertiesConvergence) = materials.D
 @inline eigen_estimator_get_dmax(materials::MaterialPropertiesConvergence) = materials.D
 @inline get_volumetric_heat_capacity(x, y, z, boreholes::Tuple{Vararg{BoreholeConvergence}}, materials::MaterialPropertiesConvergence) = one(typeof(materials.D))
+
+# no advection for convergence test
 @inline advection!(temp, dt, t, cache, boreholes::Tuple{Vararg{BoreholeConvergence}}) = nothing
 @inline create_advection_index_lists(backend, gridx, gridy, gridz, boreholes::Tuple{Vararg{BoreholeConvergence}}) = (NaN, NaN, NaN, NaN, NaN, NaN, NaN)
 
@@ -39,7 +45,7 @@ function diffusion_simulation(N, Δt, backend=backend)
     # analytical solution for pure diffusion from a point source
     # dont put t = 0
     @kernel function gaussian_diffusion_kernel!(ϕ, gridx, gridy, gridz, t, D)
-        i, j, k = @index(Global, NTuple)
+        k, j, i = @index(Global, NTuple)
         ϕ[k, j, i] = (4π * D * t)^(-3 / 2) * exp(-(gridx[i]^2 + gridy[j]^2 + gridz[k]^2) / (4D * t))
     end
 
@@ -87,11 +93,8 @@ N = 2^10
 RMS_time = [diffusion_simulation(N, Δt) for Δt in ΔTs]
 # RMS_time = [0.008712348133861458, 0.0018358316777297371, 0.00043184842094833866, 0.00010226176952638176, 2.653416909886343e-5] # results from CUDA run
 
-using Plots
-using LaTeXStrings
 
 p1 = plot(Δxs, RMS_space,
-    # title="Spatial convergence for pure diffusion\nusing gaussian_diffusion",
     title="",
     label="Error",
     marker=:o,
@@ -132,7 +135,6 @@ savefig(p1, joinpath(plots_dir(), "spatial_convergence.pdf"))
 
 
 p2 = plot(ΔTs, RMS_time,
-    # title="Temporal convergence for pure diffusion\nusing gaussian_diffusion",
     title="",
     label="Error",
     marker=:o,
