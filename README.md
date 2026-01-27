@@ -22,7 +22,7 @@ use the implementations provided here, please **also** cite this repository as
 @misc{wittenstein2026dbheRepro,
   title={Reproducibility repository for
          "A Full Three-Dimensional {GPU}-Accelerated Model for Deep Borehole Heat Exchangers ({DBHEs}) Enabling Simulation of Well Arrays"},
-  author={Wittenstein, Collin},
+  author={Wittenstein, Collin and Lujan, Emmanuel and Inglis, Andrew and Metcalfe, Robert and Edelman, Alan and Ranocha, Hendrik},
   year={2026},
   howpublished={\url{https://github.com/cwittens/2026_DBHEs_Arrays}},
   doi={10.5281/zenodo.XXXXXXX}
