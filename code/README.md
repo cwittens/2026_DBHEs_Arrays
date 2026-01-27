@@ -168,7 +168,23 @@ Generates:
 **Approximate execution time:** A few seconds (CPU only)
 
 
-### Section 5: Well Array Simulation
+### Section 5: Well Array Simulation Times (Figure 8)
+
+```julia
+include("array_time_visualization.jl")
+```
+
+Generates the plot showing simulation time scaling with array size.
+
+Generates:
+- `plots/simulation_time_vs_number_of_wells_combined.pdf` - Total and normalized simulation time vs number of wells
+
+The timing data in this script was collected from running `simulate_NxM_array.jl` with different array configurations (1x1, 3x1, 5x1, 3x3, 3x4, 4x4, 4x5, 5x5).
+
+**Approximate execution time:** A few seconds (CPU only, uses pre-recorded timing data)
+
+
+### Running Your Own Array Simulations
 
 ```julia
 include("simulate_NxM_array.jl")
@@ -176,7 +192,7 @@ include("simulate_NxM_array.jl")
 
 Demonstrates simulation of N x M well arrays. The array configuration can be modified by changing the `XC` and `YC` variables at the top of the script.
 
-**Approximate execution time:** TODO
+**Approximate execution time:** Depends on array size (see Figure 8 in the paper)
 
 
 ## Troubleshooting
