@@ -1,12 +1,20 @@
 using Pkg
 Pkg.activate(@__DIR__)
 Pkg.instantiate()
+
 using GeothermalWells
 using KernelAbstractions: CPU
 using Plots
-plots_dir() = joinpath(@__DIR__, "plots")
-!isdir(plots_dir()) && mkdir(plots_dir()) # create plots directory if it doesn't exist
 
+# =============================================================================
+# Setup directories
+# =============================================================================
+plots_dir() = joinpath(@__DIR__, "plots")
+!isdir(plots_dir()) && mkdir(plots_dir())
+
+# =============================================================================
+# Borehole array configuration
+# =============================================================================
 XC = [-60, 0, 60]
 YC = [-60, 0, 60]
 
@@ -25,6 +33,9 @@ boreholes = tuple(
     ) for xc in XC, yc in YC)...
 )
 
+# =============================================================================
+# Grid setup
+# =============================================================================
 xmin, xmax = -160, 160
 ymin, ymax = -160, 160
 zmin, zmax = 0, 2200
@@ -36,6 +47,10 @@ gridx = create_adaptive_grid_1d(xmin=xmin, xmax=xmax, dx_fine=dxdy, growth_facto
     boreholes=boreholes, backend=CPU(), Float_used=Float64, direction=:x);
 gridy = create_adaptive_grid_1d(xmin=ymin, xmax=ymax, dx_fine=dxdy, growth_factor=scaling, dx_max=max_dxy,
     boreholes=boreholes, backend=CPU(), Float_used=Float64, direction=:y);
+
+# =============================================================================
+# Create plots
+# =============================================================================
 
 p1 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =false)
 lims = 0.17
