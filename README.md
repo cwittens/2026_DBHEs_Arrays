@@ -6,13 +6,13 @@
 This repository contains information and code to reproduce the results presented
 in the article
 ```bibtex
-@online{wittenstein2026dbhe,
-  title={A Full Three-Dimensional {GPU}-Accelerated Model for Deep Borehole Heat Exchangers ({DBHEs}) Enabling Simulation of Well Arrays},
-  author={Wittenstein, Collin and Lujan, Emmanuel and Inglis, Andrew and Metcalfe, Robert and Edelman, Alan and Ranocha, Hendrik},
-  year={2026},
-  eprint={TODO},
-  eprinttype={arxiv},
-  eprintclass={physics.geo-ph}
+@inproceedings{wittenstein2026dbhe,
+  author    = {Wittenstein, Collin and Lujan, Emmanuel and Inglis, Andrew and Metcalfe, Robert and Edelman, Alan and Ranocha, Hendrik},
+  title     = {A Full Three-Dimensional {GPU}-Accelerated Model for Deep Borehole Heat Exchangers ({DBHEs}) Enabling Simulation of Well Arrays},
+  booktitle = {Proceedings of the 51st Stanford Geothermal Workshop},
+  year      = {2026},
+  address   = {Stanford, California},
+  publisher = {Stanford University}
 }
 ```
 
@@ -57,7 +57,12 @@ described in the [`code/README.md`](code/README.md) file therein.
 
 ## Authors
 
-- [Collin Wittenstein](https://github.com/cwittens) (Massachusetts Institute of Technology & Johannes Gutenberg University Mainz)
+- [Collin Wittenstein](https://cwittens.github.io/) (Massachusetts Institute of Technology & Johannes Gutenberg University Mainz)
+- [Emmanuel Lujan](https://www.emmanuellujan.com/) (Massachusetts Institute of Technology)
+- Andrew Inglis (Massachusetts Institute of Technology)
+- Robert Metcalfe (Massachusetts Institute of Technology)
+- [Alan Edelman](https://math.mit.edu/~edelman/) (Massachusetts Institute of Technology)
+- [Hendrik Ranocha](https://ranocha.de/) (Johannes Gutenberg University Mainz)
 
 
 ## License
