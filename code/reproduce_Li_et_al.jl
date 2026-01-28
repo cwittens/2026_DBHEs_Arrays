@@ -196,7 +196,7 @@ prob = ODEProblem(rhs_diffusion_z!, ϕ, tspan, cache)
 # Save solution at initial and final times only
 n_saves = 2
 saveat = range(tspan..., n_saves)
-callback, saved_values = get_callback(
+callback, saved_values = get_simulation_callback(
     saveat=saveat,
     print_every_n=10000,
     write_to_jld=false

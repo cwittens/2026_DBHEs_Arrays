@@ -139,7 +139,7 @@ prob = ODEProblem(rhs_diffusion_z!, ϕ, tspan, cache)
 
 # Save solution at 0, 1, 5, 10, and 25 years
 saveat = [3600 * 24 * 365 * year for year in [0, 1, 5, 10, 25]]
-callback, saved_values = get_callback(
+callback, saved_values = get_simulation_callback(
     saveat=saveat,
     print_every_n=100_000,
     write_to_jld=false
