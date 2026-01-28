@@ -199,7 +199,7 @@ gridz_cpu = cache_cpu.gridz
 
 # Create individual plots for each time point
 # Indices correspond to: 1 year, 5 years, 10 years, 25 years
-time_indices = [2, 3, 4, 5]
+time_indices = [2,3,4,5]
 plots_array = []
 
 for idx in time_indices
@@ -240,7 +240,7 @@ for idx in time_indices
     scatter!(p, temperature, -depth,
         label="Numerical data (Hu et al.)",
         color=2,
-        markersize=4,
+        markersize=4, markerstrokewidth=0.1,
         markershape=:diamond)
 
     # Add inlet/outlet annotations with arrows
