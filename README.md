@@ -1,7 +1,7 @@
 # A Full Three-Dimensional GPU-Accelerated Model for Deep Borehole Heat Exchangers (DBHEs) Enabling Simulation of Well Arrays
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](https://opensource.org/licenses/MIT)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18405149.svg)](https://doi.org/10.5281/zenodo.18405149)
 
 This repository contains information and code to reproduce the results presented
 in the article
@@ -25,7 +25,7 @@ use the implementations provided here, please **also** cite this repository as
   author={Wittenstein, Collin and Lujan, Emmanuel and Inglis, Andrew and Metcalfe, Robert and Edelman, Alan and Ranocha, Hendrik},
   year={2026},
   howpublished={\url{https://github.com/cwittens/2026_DBHEs_Arrays}},
-  doi={10.5281/zenodo.XXXXXXX}
+  doi={10.5281/zenodo.18405149}
 }
 ```
 
