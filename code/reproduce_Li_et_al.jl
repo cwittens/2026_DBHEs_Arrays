@@ -296,7 +296,6 @@ for i in 1:length(depths)
         label="",
         color=colors[i],
         markersize=3,
-        markerstrokewidth=0.1,
         markershape=:diamond)
 end
 

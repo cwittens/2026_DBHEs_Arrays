@@ -218,7 +218,7 @@ p1 = scatter(
     legendfontsize=8,
     ylabel="Depth [m]",
     xlabel="Temperature [°C]",
-    markersize=4, markerstrokewidth=0.1,
+    markersize=4,
     xtickfontsize=14, ytickfontsize=14,
     xguidefontsize=16, yguidefontsize=16,
     ztickfontsize=14, zguidefontsize=16,
@@ -227,20 +227,20 @@ p1 = scatter(
     size=(600, 400),
     dpi=300,
 )
-scatter!(p1, T_outer, -gridz_adjusted, label="", color=1,markersize=4, markerstrokewidth=0.1,)
+scatter!(p1, T_outer, -gridz_adjusted, label="", color=1, markersize=4,)
 
 # Add Brown et al. numerical data
 scatter!(p1, T_brown, -z_brown,
     label="Numerical data (Brown et al.)",
     color=2,
     markershape=:diamond,
-    markersize=4, markerstrokewidth=0.1,
+    markersize=4,
 )
 
 # Add annotations to identify inlet and outlet curves
 color = :black
 annotate!(p1, [(2.85, -300, text("Inlets", color, 14)),
-               (4.7, -260, text("Outlets", color, 14))])
+    (4.7, -260, text("Outlets", color, 14))])
 
 # Add arrows pointing to the curves
 plot!(p1, [2.4, 3.2], [-300, -500], arrow=true, color=color, linewidth=2, label="")
@@ -283,7 +283,7 @@ p2 = plot(
     gridlinewidth=2,
     legend=:bottomleft,
     legendfontsize=10,
-        markersize=4, markerstrokewidth=0.1,
+    markersize=4,
     xtickfontsize=14, ytickfontsize=14,
     xguidefontsize=16, yguidefontsize=16,
     ztickfontsize=14, zguidefontsize=16,
