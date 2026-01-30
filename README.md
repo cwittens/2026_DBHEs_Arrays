@@ -12,9 +12,12 @@ in the article
   booktitle = {Proceedings of the 51st Stanford Geothermal Workshop},
   year      = {2026},
   address   = {Stanford, California},
-  publisher = {Stanford University}
+  publisher = {Stanford University},
+  url       = {https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2026/Wittenstein.pdf}
 }
 ```
+
+**[Read the paper](https://pangea.stanford.edu/ERE/db/GeoConf/papers/SGW/2026/Wittenstein.pdf)**
 
 If you find these results useful, please cite the article mentioned above. If you
 use the implementations provided here, please **also** cite this repository as
@@ -37,7 +40,15 @@ use the implementations provided here, please **also** cite this repository as
 
 ## Abstract
 
-Deep coaxial borehole heat exchangers (DBHEs) present significant computational challenges due to their multi-scale geometry and long operational timescales. We present a GPU-accelerated three-dimensional model that makes well array simulations computationally tractable through an operator splitting strategy tailored to the problem's physics. The method separates vertical diffusion (stabilized explicit Runge–Kutta–Chebyshev), horizontal diffusion (alternating direction implicit), and advection (semi-Lagrangian), achieving near-unconditional stability with high efficiency. We validate against three published models using different numerical approaches, showing excellent to good agreement. The vendor-agnostic Julia implementation enables full three-dimensional simulation of multi-well arrays on a single GPU, opening new possibilities for systematic design optimization and long-term performance assessment of geothermal well systems. Our code is available as open-source software.
+Deep borehole heat exchangers (DBHEs) present significant computational challenges due to their multi-scale geometry and long
+operational timescales. We present a GPU-accelerated three-dimensional model that makes well array simulations
+computationally tractable through an operator splitting strategy tailored to the problem's physics. The method separates vertical
+diffusion (stabilized explicit Runge–Kutta–Chebyshev), horizontal diffusion (alternating direction implicit), and advection (semiLagrangian), achieving near-unconditional stability with high efficiency. We validate against three published models using
+different numerical approaches, showing excellent to good agreement. The vendor-agnostic Julia implementation enables full
+three-dimensional simulation of multi-well arrays on a single GPU, opening new possibilities for systematic design optimization
+and long-term performance assessment of geothermal well systems. The implementation is released as the open-source Julia
+package [GeothermalWells.jl](https://github.com/cwittens/GeothermalWells.jl).
+
 
 
 ## Numerical experiments
