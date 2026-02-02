@@ -256,7 +256,7 @@ println("Figure 4b saved to $(plots_dir())")
 # =============================================================================
 # Visualization: Figure 4d - Radial temperature profiles at different depths
 # =============================================================================
-
+begin
 # Extract grids and final temperature field
 gridx_cpu = cache_cpu.gridx
 gridy_cpu = cache_cpu.gridy
@@ -289,7 +289,7 @@ p2 = plot(
     ztickfontsize=14, zguidefontsize=16,
     left_margin=1Plots.mm,
     right_margin=3Plots.mm,
-    size=(700, 500),
+    size=(600, 450),
     dpi=300
 )
 
@@ -306,7 +306,7 @@ for (i, depth) in enumerate(depths)
     plot!(p2, r, T_profile,
         label="",
         color=colors[i],
-        linewidth=3)
+        linewidth=4)
 end
 
 # Add Brown et al. numerical data as scatter points
@@ -315,7 +315,7 @@ for i in 1:length(depths)
     scatter!(p2, r_num, T_num,
         label="",
         color=colors[i],
-        markersize=3,
+        markersize=3.3,
         markershape=:diamond)
 end
 
@@ -326,5 +326,6 @@ annotate!(p2, 65, 26.5, text("600m", color=p2.series_list[4][:linecolor], :left,
 annotate!(p2, 65, 16.5, text("300m", color=p2.series_list[3][:linecolor], :left, 15))
 
 # Save figure
-savefig(p2, joinpath(plots_dir(), "Brown_et_al_temperature_rock.pdf"))
+savefig(p2, joinpath(plots_dir(), "Brown_et_al_temperature_rock_PP.png"))
 println("Figure 4d saved to $(plots_dir())")
+end

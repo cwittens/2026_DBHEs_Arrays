@@ -36,7 +36,7 @@ times = [
 
 array_types = ["1×1", "3×1", "5×1", "3×3", "3×4", "4×4", "4×5", "5×5"]
 n_wells = [1, 3, 5, 9, 12, 16, 20, 25]
-
+begin
 # Plot total simulation time
 p = plot(n_wells, times ./ 3600,
     xlabel="Number of Wells",
@@ -44,10 +44,10 @@ p = plot(n_wells, times ./ 3600,
     label="Simulation Time vs Number of Wells",
     xlims=(0.01, 26),
     legend=:topleft,
-    marker=:o, markersize=6,
+    marker=:o, markersize=7,
     grid=true, box=:on,
     size=(600, 400), dpi=300,
-    linewidth=3, gridlinewidth=2,
+    linewidth=4, gridlinewidth=2,
     xtickfontsize=14, ytickfontsize=14,
     xguidefontsize=16, yguidefontsize=16,
     ztickfontsize=14, zguidefontsize=16,
@@ -72,14 +72,15 @@ p2 = plot(n_wells, normalized_times ./ 3600,
     label="Normalized Simulation Time\nvs Number of Wells",
     xlims=(0.01, 26),
     legend=:topleft,
-    marker=:o, markersize=6,
+    marker=:o, markersize=7,
     grid=true, box=:on,
     size=(600, 400), dpi=300,
-    linewidth=3, gridlinewidth=2,
+    linewidth=4, gridlinewidth=2,
     xtickfontsize=14, ytickfontsize=14,
     xguidefontsize=16, yguidefontsize=16,
     ztickfontsize=14, zguidefontsize=16,
     legendfontsize=12,
+    color = 2,
 )
 
 # Add annotations for array types
@@ -92,7 +93,9 @@ end
 
 # Combined plot
 p_combined = plot(p, p2, layout=(1, 2), size=(1200, 400),
+    dpi=300,
     left_margin=7Plots.mm, right_margin=0Plots.mm,
     top_margin=5Plots.mm, bottom_margin=8Plots.mm)
 
-@info  savefig(p_combined, joinpath(plots_dir(), "simulation_time_vs_number_of_wells_combined.pdf"))
+@info  savefig(p_combined, joinpath(plots_dir(), "simulation_time_vs_number_of_wells_combined_PP.png"))
+end

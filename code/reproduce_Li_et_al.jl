@@ -255,7 +255,7 @@ t = saved_values.t[end] / 3600 / 24    # final time [days]
 # Depths at which to compare with Li et al. data (matches their Figure 5)
 depths = [500.0, 1000.0, 1500.0, 2000.0]  # [m]
 colors = [1, 2, 3, 4]
-
+begin
 # =============================================================================
 # Create comparison plot
 # =============================================================================
@@ -270,7 +270,7 @@ p = plot(
     xtickfontsize=14, ytickfontsize=14,
     xguidefontsize=16, yguidefontsize=16,
     legendfontsize=12,
-    size=(700, 500),
+    size=(580, 450),
     dpi=300
 )
 
@@ -286,7 +286,7 @@ for (i, depth) in enumerate(depths)
     plot!(p, r, T_profile,
         label="",
         color=colors[i],
-        linewidth=3)
+        linewidth=4)
 end
 
 # Add Li et al. numerical data as scatter points
@@ -295,7 +295,7 @@ for i in 1:length(depths)
     scatter!(p, r_exp, T_exp,
         label="",
         color=colors[i],
-        markersize=3,
+        markersize=4,
         markershape=:diamond)
 end
 
@@ -307,5 +307,6 @@ annotate!(p, 50, 42.473182396666665 - 2, text("1000m", color=p.series_list[4][:l
 annotate!(p, 50, 29.563582989999997 + 2, text("500m", color=p.series_list[3][:linecolor], :left, 15))
 
 # Save figure
-savefig(p, joinpath(plots_dir(), "Li_et_al_temperature_radial_profile.pdf"))
+savefig(p, joinpath(plots_dir(), "Li_et_al_temperature_radial_profile_PP.png"))
 println("Plot saved to $(plots_dir())")
+end

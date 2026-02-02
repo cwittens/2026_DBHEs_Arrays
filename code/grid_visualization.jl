@@ -53,9 +53,24 @@ gridy = create_adaptive_grid_1d(xmin=ymin, xmax=ymax, dx_fine=dxdy, growth_facto
 # =============================================================================
 
 p1 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =false)
+p1 = plot(p1, dpi=300)
 lims = 0.17
 p2 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =:bottomleft, xlims=(-lims+XC[1], lims+XC[1]), ylims=(-lims+YC[1], lims+YC[1]), annotate=false)
+p2 = plot(p2, dpi=300)
+
+lims = 0.035
+shift = -0.055
+p3 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =false, xlims=(-lims+XC[1]-shift, lims+XC[1]-shift), ylims=(-lims+YC[1]-shift, lims+YC[1]-shift), annotate=false)
+xticks!(p3, [1,])
+yticks!(p3, [1,])
+ylabel!(p3, "")
+xlabel!(p3, "")
+p3 = plot(p3, dpi=300)
 
 
-p_combined = plot(p1, p2, layout=(1, 2), size=(800, 400), dpi=300, left_margin=3Plots.mm,) 
-@info  savefig(p_combined, joinpath(plots_dir(), "Grid_overview.pdf"))
+@info  savefig(p1, joinpath(plots_dir(), "Grid.png"))
+@info  savefig(p2, joinpath(plots_dir(), "Grid_zoom.png"))
+@info  savefig(p3, joinpath(plots_dir(), "Grid_superzoom.png"))
+
+# p_combined = plot(p1, p2, layout=(1, 2), size=(800, 400), dpi=300, left_margin=3Plots.mm,) 
+# @info  savefig(p_combined, joinpath(plots_dir(), "Grid_overview.pdf"))
