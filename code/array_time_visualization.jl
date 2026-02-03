@@ -42,7 +42,7 @@ p = plot(n_wells, times ./ 3600,
     xlabel="Number of Wells",
     ylabel="Time [hours]",
     label="Simulation Time vs Number of Wells",
-    xlims=(0.01, 26),
+    # xlims=(0.01, 26),
     legend=:topleft,
     marker=:o, markersize=7,
     grid=true, box=:on,
@@ -52,11 +52,12 @@ p = plot(n_wells, times ./ 3600,
     xguidefontsize=16, yguidefontsize=16,
     ztickfontsize=14, zguidefontsize=16,
     legendfontsize=12,
+    xlims = (0.6, 10), ylims =(0, 9)
 )
 
 # Add annotations for array types
 for i in 1:4
-    annotate!(p, n_wells[i], times[i] / 3600 + 1.5, text(array_types[i], 13, :bottom))
+    annotate!(p, n_wells[i], times[i] / 3600 + 0.5, text(array_types[i], 13, :bottom))
 end
 for i in 5:8
     annotate!(p, n_wells[i], times[i] / 3600 - 1.5, text(array_types[i], 13, :top))
@@ -97,5 +98,10 @@ p_combined = plot(p, p2, layout=(1, 2), size=(1200, 400),
     left_margin=7Plots.mm, right_margin=0Plots.mm,
     top_margin=5Plots.mm, bottom_margin=8Plots.mm)
 
-@info  savefig(p_combined, joinpath(plots_dir(), "simulation_time_vs_number_of_wells_combined_PP.png"))
+# @info  savefig(p_combined, joinpath(plots_dir(), "simulation_time_vs_number_of_wells_combined_PP.png"))
+
+@info savefig(p, joinpath(plots_dir(), "simulation_time_vs_number_of_wells_zoomed_PP.png"))
+# @info savefig(p2, joinpath(plots_dir(), "normalized_simulation_time_vs_number_of_wells_PP.png"))
+
+
 end

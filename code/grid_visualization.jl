@@ -18,6 +18,9 @@ plots_dir() = joinpath(@__DIR__, "plots")
 XC = [-60, 0, 60]
 YC = [-60, 0, 60]
 
+XC = [0]
+YC = [0]
+
 boreholes = tuple(
     (Borehole{Float64}(
         xc,            # xc
@@ -53,7 +56,7 @@ gridy = create_adaptive_grid_1d(xmin=ymin, xmax=ymax, dx_fine=dxdy, growth_facto
 # =============================================================================
 
 p1 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =false)
-p1 = plot(p1, dpi=300)
+p1 = plot(p1, dpi=300, xlims=(-100, 100), ylims=(-100, 100))
 lims = 0.17
 p2 = plot_grid(gridx, gridy, size=(400, 400), boreholes=boreholes, legend =:bottomleft, xlims=(-lims+XC[1], lims+XC[1]), ylims=(-lims+YC[1], lims+YC[1]), annotate=false)
 p2 = plot(p2, dpi=300)
@@ -68,7 +71,7 @@ xlabel!(p3, "")
 p3 = plot(p3, dpi=300)
 
 
-@info  savefig(p1, joinpath(plots_dir(), "Grid.png"))
+@info  savefig(p1, joinpath(plots_dir(), "Grid_single.png"))
 @info  savefig(p2, joinpath(plots_dir(), "Grid_zoom.png"))
 @info  savefig(p3, joinpath(plots_dir(), "Grid_superzoom.png"))
 
